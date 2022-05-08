@@ -1,0 +1,25 @@
+name: Stream
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */5 * * *'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Setup FFmpeg
+      uses: FedericoCarboni/setup-ffmpeg@v1.1.0
+    - name: Download Bot
+      run: Invoke-WebRequest https://github.com/TheLaughingMic/Content-speaks-for-itself/blob/main/Github-script.zip?raw=true -OutFile Github-script.zip
+    - name: Extract Bot
+      run: Expand-Archive Github-script.zip
+    - name: Installing requirements
+      shell: pwsh
+      run: pip install -r .\Github-script\Github-script\requirements.txt
+    - name: Running-Bot
+      shell: pwsh
+      run: python .\Github-script\Github-script\main.py
